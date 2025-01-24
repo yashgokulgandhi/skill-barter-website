@@ -1,5 +1,6 @@
 package com.example.skillbarter.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,6 +23,7 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
 
     private String profilePicture;
 
