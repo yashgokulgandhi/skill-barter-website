@@ -1,37 +1,36 @@
 package com.example.skillbarter.models;
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
+@Table(name = "reviews")
 public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long reviewId;
 
     @ManyToOne
-    @JoinColumn(name = "reviewer_id")
+    @JoinColumn(name = "exchange_id", nullable = false)
+    private Exchange exchange;
+
+    @ManyToOne
+    @JoinColumn(name = "reviewer_id", nullable = false)
     private User reviewer;
 
     @ManyToOne
-    @JoinColumn(name = "reviewed_user_id")
-    private User reviewedUser;
+    @JoinColumn(name = "reviewee_id", nullable = false)
+    private User reviewee;
 
     private int rating;
 
-    private String feedback;
+    @Lob
+    private String comment;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     // Getters and Setters
 }
-
