@@ -1,32 +1,27 @@
 package com.example.skillbarter.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
+@Table(name = "skill")
 public class Skill {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long skillId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
+    @Column(unique = true, nullable = false)
     private String skillName;
 
-    private String proficiencyLevel;
+    @Lob
+    private String description;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @OneToMany(mappedBy = "skill")
+    private List<UserSkill> userSkills;
 
     // Getters and Setters
 }
