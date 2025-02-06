@@ -60,7 +60,7 @@ function Signup() {
           ))}
           <button type="submit" className="auth-button">
             Sign Up
-          </button>
+          </button> 
         </form>
         <p className="auth-link">
           Already have an account?{' '}

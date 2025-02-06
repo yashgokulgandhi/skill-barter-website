@@ -7,18 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 
 @Service
 public class UserService {
+
 
     @Autowired
     private UserRepository userRepository;
 
     public User registerUser(User user) {
+        // Set the current LocalDateTime (without formatting)
+        user.setCreatedAt(LocalDateTime.now(ZoneId.of("Asia/Kolkata")));
 
-        user.setCreatedAt(LocalDateTime.now());
         return userRepository.save(user);
     }
+
 
     public boolean isEmailTaken(String email) {
         return userRepository.findByEmail(email).isPresent();

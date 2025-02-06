@@ -1,26 +1,63 @@
-import React from 'react';
-import { MessageCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Search } from 'lucide-react';
+import '../styles/MessageList.css';
 
-function Messages() {
-  const conversations = [
-    { id: 1, name: 'John Doe', lastMessage: 'Hey, when can we start the skill exchange?' },
-    { id: 2, name: 'Jane Smith', lastMessage: 'Thanks for the great design session!' },
-    { id: 3, name: 'Mike Johnson', lastMessage: 'Would love to learn more about programming' },
-  ];
+function MessageList() {
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Fetch users from backend
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/users');
+        if (!response.ok) throw new Error('Failed to fetch users');
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  // Filter users based on search
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="container">
-      <h1>Messages</h1>
-      
-      <div className="messages-list">
-        {conversations.map((conversation) => (
-          <div key={conversation.id} className="message-card">
-            <div className="message-avatar">
-              <MessageCircle size={24} />
+    <div className="message-list">
+      <div className="search-container">
+        <Search className="search-icon" size={20} />
+        <input
+          type="text"
+          placeholder="Search users..."
+          className="search-input"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
+      <div className="messages-container">
+        {filteredUsers.map((user) => (
+          <div
+            key={user.userId}
+            className="message-card"
+            onClick={() => navigate(`/chat/${user.userId}`)}
+          >
+            <div className="avatar">
+              <img
+                src={user.profilePicture || 'https://via.placeholder.com/100'}
+                alt={user.name}
+                className="avatar-image"
+              />
             </div>
             <div className="message-content">
-              <h3>{conversation.name}</h3>
-              <p>{conversation.lastMessage}</p>
+              <h3>{user.name}</h3>
+              <p>{user.bio || "No bio available"}</p>
             </div>
           </div>
         ))}
@@ -29,4 +66,4 @@ function Messages() {
   );
 }
 
-export default Messages;
+export default MessageList;

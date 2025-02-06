@@ -1,5 +1,6 @@
 package com.example.skillbarter.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,9 +11,11 @@ public class UserSkill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long userSkillId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

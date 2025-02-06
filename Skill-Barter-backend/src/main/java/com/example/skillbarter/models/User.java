@@ -1,8 +1,10 @@
 package com.example.skillbarter.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +32,9 @@ public class User {
     @Lob
     private String bio;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
+
 
     @OneToMany(mappedBy = "user")
     private List<UserSkill> userSkills;
@@ -40,6 +44,15 @@ public class User {
 
     @OneToMany(mappedBy = "reviewee")
     private List<Review> reviewsReceived;
+
+
+    @OneToMany(mappedBy = "sender")
+    @JsonIgnore
+    private List<Message> sentMessages;
+
+    @OneToMany(mappedBy = "receiver")
+    @JsonIgnore
+    private List<Message> receivedMessages;
 
     // Getters and Setters
 }

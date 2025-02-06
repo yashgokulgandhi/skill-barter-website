@@ -13,9 +13,9 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
-    @ManyToOne
-    @JoinColumn(name = "exchange_id", nullable = false)
-    private Exchange exchange;
+//    @ManyToOne
+//    @JoinColumn(name = "exchange_id", nullable = false)
+//    private Exchange exchange;
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
@@ -30,5 +30,14 @@ public class Message {
 
     private LocalDateTime timestamp;
 
+    public Message() {}
+
+    public Message(User sender, User receiver, String content, LocalDateTime timestamp) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.content = content;
+        this.timestamp = timestamp;
+
     // Getters and Setters
+}
 }

@@ -7,6 +7,7 @@ import Messages from './components/Messages';
 import Profile from './components/Profile';
 import Navbar from './components/Navbar';
 import './styles.css';
+import Chat from './components/Chat';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -70,6 +71,11 @@ function App() {
         <Route
           path="/profile"
           element={isAuthenticated ? <Profile /> : <Navigate to="/" replace />}
+        />
+
+         <Route
+          path="/chat/:id"
+          element={isAuthenticated ? <Chat /> : <Navigate to="/" replace />}
         />
       </Routes>
     </div>
