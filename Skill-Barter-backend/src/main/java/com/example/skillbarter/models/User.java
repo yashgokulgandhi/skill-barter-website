@@ -26,7 +26,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-
+    @Lob
+    @Column(length = 3024)
     private String profilePicture;
 
     @Lob

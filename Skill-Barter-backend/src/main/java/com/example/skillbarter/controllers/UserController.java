@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+
 public class UserController {
 
     @Autowired
@@ -25,6 +25,13 @@ public class UserController {
         User user = userService.getCurrentUser(email); // Assuming you have logic to get the logged-in user
         return ResponseEntity.ok(user);
     }
+
+    @GetMapping(path="/api/userbyid/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userRepository.findById(id).orElse(null); // Assuming you have logic to get the logged-in user
+        return ResponseEntity.ok(user);
+    }
+
 
     // Update the user's profile
     @PutMapping(path="/api/user/{email}")

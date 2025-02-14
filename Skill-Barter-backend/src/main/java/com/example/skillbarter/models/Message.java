@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Data
 @Table(name = "messages")
@@ -12,10 +13,6 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
-
-//    @ManyToOne
-//    @JoinColumn(name = "exchange_id", nullable = false)
-//    private Exchange exchange;
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
@@ -37,7 +34,5 @@ public class Message {
         this.receiver = receiver;
         this.content = content;
         this.timestamp = timestamp;
-
-    // Getters and Setters
-}
+    }
 }

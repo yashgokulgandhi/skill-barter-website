@@ -11,15 +11,16 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws") // WebSocket connection endpoint
-                .setAllowedOrigins("http://localhost:5173") // Allow specific frontend origin
-                .withSockJS(); // Enable SockJS fallback
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/queue"); // ✅ Enable private messaging
+        config.setApplicationDestinationPrefixes("/app"); // ✅ Prefix for sending messages
+        config.setUserDestinationPrefix("/user"); // ✅ Allow private messages
     }
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic"); // Clients subscribe to this
-        registry.setApplicationDestinationPrefixes("/app"); // Clients send messages here
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws")
+                .setAllowedOriginPatterns("http://localhost:5173")  // ✅ Allow only frontend origin
+                .withSockJS();
     }
 }

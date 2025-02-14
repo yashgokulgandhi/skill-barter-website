@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/signup")
-@CrossOrigin(origins = "http://localhost:5173") // Allowing requests from the React app
+ // Allowing requests from the React app
 public class SignupController {
 
     @Autowired

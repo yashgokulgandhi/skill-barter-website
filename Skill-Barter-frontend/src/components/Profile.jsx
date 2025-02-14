@@ -159,7 +159,7 @@ function App() {
               />
             ) : (
               <div className="profile-picture-placeholder">
-                <User size={40} className="user-icon" />
+                <User size={80} className="user-icon" />
               </div>
             )}
             <div className="profile-text">

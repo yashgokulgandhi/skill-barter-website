@@ -8,6 +8,7 @@ import Profile from './components/Profile';
 import Navbar from './components/Navbar';
 import './styles.css';
 import Chat from './components/Chat';
+import ChatWindow from './components/ChatWindow';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -21,11 +22,13 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-
+  
       if (response.ok) {
+        const data = await response.json(); // ✅ Get userId from response
         setIsAuthenticated(true);
         localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('email',email)
+        localStorage.setItem('email', email);
+        localStorage.setItem('userId', data.userId); // ✅ Store userId
         return true;
       } else {
         const errorMessage = await response.text();
@@ -38,11 +41,13 @@ function App() {
       return false;
     }
   };
+  
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('email');
+    localStorage.removeItem('userId');
   };
 
   return (
@@ -73,10 +78,13 @@ function App() {
           element={isAuthenticated ? <Profile /> : <Navigate to="/" replace />}
         />
 
+
          <Route
-          path="/chat/:id"
-          element={isAuthenticated ? <Chat /> : <Navigate to="/" replace />}
+          path="/chat/:receiverId"
+          element={isAuthenticated ? <ChatWindow /> : <Navigate to="/" replace />}
         />
+
+       
       </Routes>
     </div>
   );

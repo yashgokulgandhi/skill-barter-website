@@ -52,9 +52,9 @@
 }
 
 .search-icon {
-  position: absolute;
+  position:a;
   left: 0.75rem;
-  top: 50%;
+  top: 5%;
   transform: translateY(-50%);
   color: #a0aec0;
 }
