@@ -1,0 +1,155 @@
+/* Main container for the request page */
+.request-page {
+    padding: 40px;
+    width: 100%;
+    min-height: 100vh;
+    background-color: 272466;
+    color: white;
+  }
+  
+  /* Heading styling */
+  .request-page h1 {
+    color: white;
+    margin-bottom: 40px;
+    font-size: 32px;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  /* Container for all request cards */
+  .requests-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Styling for each request card */
+  .request-card {
+    background: 2C2872;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .request-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Container for user info (profile image and details) */
+  .request-info {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1;
+  }
+  
+  /* Profile picture as circular image */
+  .profile-pic {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffd700;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* User information section */
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  /* User name styling */
+  .user-info h3 {
+    margin: 0;
+    font-size: 20px;
+    color: white;
+    font-weight: 600;
+  }
+  
+  /* Skill info styling */
+  .user-info p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 15px;
+  }
+  
+  /* Date of request styling */
+  .request-date {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 5px;
+  }
+  
+  /* Action buttons container */
+  .action-buttons {
+    display: flex;
+    gap: 16px;
+    margin-left: 24px;
+  }
+  
+  /* Base button styling */
+  .action-buttons button {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Styling for Accept button */
+  .accept-btn {
+    background-color: #ffd700;
+    color: #2d2654;
+  }
+  
+  .accept-btn:hover {
+    background-color: #ffed4a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+  }
+  
+  /* Styling for Decline button */
+  .decline-btn {
+    background-color: #ff4757;
+    color: white;
+  }
+  
+  .decline-btn:hover {
+    background-color: #ff6b77;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .request-page {
+      padding: 20px;
+    }
+  
+    .request-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+  
+    .action-buttons {
+      width: 100%;
+      margin-left: 0;
+      justify-content: flex-end;
+    }
+  }

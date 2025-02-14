@@ -9,6 +9,8 @@ import Navbar from './components/Navbar';
 import './styles.css';
 import Chat from './components/Chat';
 import ChatWindow from './components/ChatWindow';
+import SearchPage from './components/SearchPage';
+import RequestPage from './components/RequestPage'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -76,6 +78,14 @@ function App() {
         <Route
           path="/profile"
           element={isAuthenticated ? <Profile /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/search"
+          element={isAuthenticated ? <SearchPage/> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/request"
+          element={isAuthenticated ? <RequestPage /> : <Navigate to="/" replace />}
         />
 
 

@@ -1,0 +1,155 @@
+/* Search container */
+.search-container {
+  padding: 40px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1e1b4b;
+  color: white;
+}
+
+/* Search bar styling */
+.search-bar {
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  color: #94a3b8;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 16px 24px 16px 48px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background-color: rgba(46, 42, 110, 0.6);
+  color: white;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.search-bar input::placeholder {
+  color: #94a3b8;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Search results container */
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* User card styling */
+.user-card {
+  background: rgba(46, 42, 110, 0.6);
+  border-radius: 24px;
+  padding: 24px;
+}
+
+/* User info container */
+.user-info {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  width: 100%;
+}
+
+/* Profile picture */
+.profile-pic-wrapper {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border: 3px solid #ffd700;
+  border-radius: 50%;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Content wrapper */
+.content-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.username {
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+/* Skills container */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #e2e8f0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* No results message */
+.no-results {
+  text-align: center;
+  color: #94a3b8;
+  padding: 40px;
+  font-size: 18px;
+  background: rgba(46, 42, 110, 0.6);
+  border-radius: 24px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-container {
+    padding: 20px;
+  }
+
+  .user-info {
+    gap: 16px;
+  }
+
+  .profile-pic-wrapper {
+    width: 56px;
+    height: 56px;
+  }
+
+  .username {
+    font-size: 20px;
+  }
+
+  .skill {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
