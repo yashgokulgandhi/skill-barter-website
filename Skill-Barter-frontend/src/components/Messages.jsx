@@ -48,7 +48,7 @@ function MessageList() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-      </div>
+     
 
       <div className="messages-container">
         {filteredUsers.length === 0 ? (
@@ -75,6 +75,7 @@ function MessageList() {
           ))
         )}
       </div>
+    </div>
     </div>
   );
 }

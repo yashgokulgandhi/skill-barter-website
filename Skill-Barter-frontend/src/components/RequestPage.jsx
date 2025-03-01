@@ -1,5 +1,5 @@
 import React from 'react';
-import './RequestPage.css';
+import '../styles/RequestPage.css';
 
 const RequestPage = () => {
   // Mock data for requests - in a real app this would come from your backend

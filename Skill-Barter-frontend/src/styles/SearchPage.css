@@ -21,6 +21,7 @@
 
 .search-icon {
   position: absolute;
+  margin-top: 24px;
   left: 16px;
   color: #94a3b8;
 }

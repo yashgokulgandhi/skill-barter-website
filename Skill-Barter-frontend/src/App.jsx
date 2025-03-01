@@ -11,6 +11,7 @@ import Chat from './components/Chat';
 import ChatWindow from './components/ChatWindow';
 import SearchPage from './components/SearchPage';
 import RequestPage from './components/RequestPage'
+import SearchedProfile from './components/SearchedProfile';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -24,7 +25,7 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-  
+
       if (response.ok) {
         const data = await response.json(); // ✅ Get userId from response
         setIsAuthenticated(true);
@@ -43,7 +44,7 @@ function App() {
       return false;
     }
   };
-  
+
 
   const handleLogout = () => {
     setIsAuthenticated(false);
@@ -81,20 +82,25 @@ function App() {
         />
         <Route
           path="/search"
-          element={isAuthenticated ? <SearchPage/> : <Navigate to="/" replace />}
+          element={isAuthenticated ? <SearchPage /> : <Navigate to="/" replace />}
         />
         <Route
           path="/request"
           element={isAuthenticated ? <RequestPage /> : <Navigate to="/" replace />}
         />
 
+        <Route
+          path="/searched-profile/:userId"
+          element={isAuthenticated ? <SearchedProfile /> : <Navigate to="/" replace />}
+        />
 
-         <Route
+
+        <Route
           path="/chat/:receiverId"
           element={isAuthenticated ? <ChatWindow /> : <Navigate to="/" replace />}
         />
 
-       
+
       </Routes>
     </div>
   );
