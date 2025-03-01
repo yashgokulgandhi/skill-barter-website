@@ -15,7 +15,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "exchange_id", nullable = false)
-    private Exchange exchange;
+    private Request exchange;
 
     @ManyToOne
     @JoinColumn(name = "reviewer_id", nullable = false)

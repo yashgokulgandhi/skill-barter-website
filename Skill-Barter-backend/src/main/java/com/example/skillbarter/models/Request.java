@@ -2,17 +2,16 @@ package com.example.skillbarter.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "exchanges")
-public class Exchange {
+@Table(name = "request")
+public class Request {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long exchangeId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_a_id", nullable = false)
@@ -36,9 +35,6 @@ public class Exchange {
     private LocalDateTime createdAt;
 
     public enum Status {
-        PENDING, IN_PROGRESS, COMPLETED, CANCELLED
+        ACCEPTED, PENDING, DECLINED
     }
-
-    // Getters and Setters
 }
-

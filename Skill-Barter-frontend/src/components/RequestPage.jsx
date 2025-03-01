@@ -1,69 +1,66 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import '../styles/RequestPage.css';
 
 const RequestPage = () => {
-  // Mock data for requests - in a real app this would come from your backend
-  const requests = [
-    {
-      id: 1,
-      name: "John Doe",
-      profilePic: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
-      skill: "Programming",
-      date: "2024-03-10"
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      profilePic: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
-      skill: "Photography",
-      date: "2024-03-09"
+  const [requests, setRequests] = useState([]);
+  const userId = localStorage.getItem('userId'); // Assume userId is stored after login
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchRequests = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/requests/pending/${userId}`);
+        setRequests(response.data);
+      } catch (error) {
+        console.error("❌ Error fetching requests:", error);
+      }
+    };
+
+    fetchRequests();
+  }, [userId]);
+
+  const handleAction = async (id, action) => {
+    try {
+      await axios.post(`http://localhost:8080/api/requests/${action}/${id}`);
+      setRequests(prevRequests => prevRequests.filter(req => req.id !== id)); // Remove accepted/declined request
+    } catch (error) {
+      console.error(`❌ Error ${action} request:`, error);
     }
-  ];
-
-  const handleAccept = (id) => {
-    console.log(`Accepted request ${id}`);
-    // Add your accept logic here
-  };
-
-  const handleDecline = (id) => {
-    console.log(`Declined request ${id}`);
-    // Add your decline logic here
   };
 
   return (
     <div className="request-page">
       <h1>Skill Exchange Requests</h1>
       <div className="requests-container">
-        {requests.map((request) => (
-          <div key={request.id} className="request-card">
-            <div className="request-info">
-              <img 
-                src={request.profilePic} 
-                alt={request.name} 
-                className="profile-pic"
-              />
-              <div className="user-info">
-                <h3>{request.name}</h3>
-                <p>Skill: {request.skill}</p>
-                <p className="request-date">Requested on: {request.date}</p>
+        {requests.length > 0 ? (
+          requests.map((request) => (
+            <div key={request.id} className="request-card">
+              <div className="request-info">
+                <img 
+                  src={request.userA?.profilePicture || "/default-profile.png"} 
+                  alt={request.userA?.name || "User"} 
+                  className="profile-pic"
+                  onError={(e) => { e.target.src = "/default-profile.png"; }} // Handle broken images
+                />
+                <div className="user-info">
+                  <h3>{request.userA?.name || "Unknown User"}</h3>
+                  <p>Skill: {request.userASkill?.skillName || "Unknown Skill"}</p>
+                  <p className="request-date">
+                    Requested on: {request.createdAt ? new Date(request.createdAt).toLocaleDateString() : "N/A"}
+                  </p>
+                </div>
+              </div>
+              <div className="action-buttons">
+                <button className="accept-btn" onClick={() => handleAction(request.id, "accept")}>Accept</button>
+                <button className="decline-btn" onClick={() => handleAction(request.id, "decline")}>Decline</button>
               </div>
             </div>
-            <div className="action-buttons">
-              <button 
-                className="accept-btn"
-                onClick={() => handleAccept(request.id)}
-              >
-                Accept
-              </button>
-              <button 
-                className="decline-btn"
-                onClick={() => handleDecline(request.id)}
-              >
-                Decline
-              </button>
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No pending requests.</p>
+        )}
       </div>
     </div>
   );
