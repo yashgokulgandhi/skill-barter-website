@@ -1,6 +1,6 @@
   import React from 'react';
   import { Link, useLocation, useNavigate } from 'react-router-dom';
-  import { Home, MessageCircle, User, LogOut, Sparkles,Bell,Search } from 'lucide-react';
+  import { Home, MessageCircle, User, LogOut, Sparkles,Bell,Search,ArrowLeftRight } from 'lucide-react';
 
   function Navbar({ onLogout }) {
     const location = useLocation();
@@ -29,7 +29,8 @@
               { path: '/messages', icon: MessageCircle, label: 'Messages' },
               { path: '/profile', icon: User, label: 'Profile' },
               { path: '/search', icon: Search, label: 'Search' },
-              { path: '/request', icon: Bell, label: 'Requests' }
+              { path: '/request', icon: Bell, label: 'Requests' },
+              {path: '/exchanges', icon: ArrowLeftRight, label: 'exchanges'}
             ].map(({ path, icon: Icon, label }) => (
               <Link
                 key={path}

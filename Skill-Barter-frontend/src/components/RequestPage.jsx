@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/RequestPage.css';
+import { useNavigate } from 'react-router-dom';
 
 const RequestPage = () => {
   const [requests, setRequests] = useState([]);
-  const userId = localStorage.getItem('userId'); // Assume userId is stored after login
+  const userId = localStorage.getItem('userId'); 
+  const navigate=useNavigate();// Assume userId is stored after login
 
   useEffect(() => {
     if (!userId) return;
@@ -24,9 +26,15 @@ const RequestPage = () => {
   const handleAction = async (id, action) => {
     try {
       await axios.post(`http://localhost:8080/api/requests/${action}/${id}`);
+
       setRequests(prevRequests => prevRequests.filter(req => req.id !== id)); // Remove accepted/declined request
     } catch (error) {
       console.error(`❌ Error ${action} request:`, error);
+    }
+
+    if(action=='accept')
+    {
+      navigate('/exchanges')
     }
   };
 
@@ -47,6 +55,7 @@ const RequestPage = () => {
                 <div className="user-info">
                   <h3>{request.userA?.name || "Unknown User"}</h3>
                   <p>Skill: {request.userASkill?.skillName || "Unknown Skill"}</p>
+                  <p className="request-message">Message: {request.requestMessage || "No message provided."}</p>
                   <p className="request-date">
                     Requested on: {request.createdAt ? new Date(request.createdAt).toLocaleDateString() : "N/A"}
                   </p>

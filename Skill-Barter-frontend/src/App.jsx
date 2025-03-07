@@ -12,6 +12,7 @@ import ChatWindow from './components/ChatWindow';
 import SearchPage from './components/SearchPage';
 import RequestPage from './components/RequestPage'
 import SearchedProfile from './components/SearchedProfile';
+import ExchangesPage from './components/ExchangesPage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -99,7 +100,12 @@ function App() {
           path="/chat/:receiverId"
           element={isAuthenticated ? <ChatWindow /> : <Navigate to="/" replace />}
         />
-
+      
+      <Route
+          path="/exchanges"
+          element={isAuthenticated ? <ExchangesPage/> : <Navigate to="/" replace />}
+        />
+      
 
       </Routes>
     </div>

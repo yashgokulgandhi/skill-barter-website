@@ -9,6 +9,7 @@ function SearchedProfile() {
   const [skills, setSkills] = useState([]);
   const [selectedSkill, setSelectedSkill] = useState("");
   const [searchedUserSkill, setSearchedUserSkill] = useState("");
+  const [message, setMessage] = useState(""); // New state for request message
   const loggedInUserId = localStorage.getItem("userId"); // Logged-in user ID
 
   useEffect(() => {
@@ -30,8 +31,8 @@ function SearchedProfile() {
   }, [userId, loggedInUserId]);
 
   const handleRequest = async () => {
-    if (!selectedSkill || !searchedUserSkill) {
-      alert("Please select both skills.");
+    if (!selectedSkill || !searchedUserSkill || !message) {
+      alert("Please select both skills and enter a message.");
       return;
     }
 
@@ -40,6 +41,7 @@ function SearchedProfile() {
       userASkillId: Number(selectedSkill),
       userBId: Number(userId),
       userBSkillId: Number(searchedUserSkill),
+      requestMessage: message,
     };
 
     console.log("Sending request with data:", requestData);
@@ -103,6 +105,13 @@ function SearchedProfile() {
               </option>
             ))}
           </select>
+
+          <label>Message:</label>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Enter your message..."
+          ></textarea>
 
           <button onClick={handleRequest}>Send Request</button>
         </div>

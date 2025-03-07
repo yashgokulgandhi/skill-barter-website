@@ -1,8 +1,10 @@
 package com.example.skillbarter.controllers;
 
+import com.example.skillbarter.models.Exchange;
 import com.example.skillbarter.models.Request;
 import com.example.skillbarter.models.Skill;
 import com.example.skillbarter.models.User;
+import com.example.skillbarter.repositories.ExchangeRepository;
 import com.example.skillbarter.repositories.RequestRepository;
 import com.example.skillbarter.repositories.SkillRepository;
 import com.example.skillbarter.repositories.UserRepository;
@@ -19,11 +21,13 @@ public class RequestController {
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
     private final SkillRepository skillRepository;
+    private final ExchangeRepository exchangeRepository;
 
-    public RequestController(RequestRepository requestRepository, UserRepository userRepository, SkillRepository skillRepository) {
+    public RequestController(RequestRepository requestRepository, UserRepository userRepository, SkillRepository skillRepository, ExchangeRepository exchangeRepository) {
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
         this.skillRepository = skillRepository;
+        this.exchangeRepository = exchangeRepository;
     }
 
     // 📌 Create a new skill exchange request
@@ -32,7 +36,8 @@ public class RequestController {
             @RequestParam Long userAId,
             @RequestParam Long userASkillId,
             @RequestParam Long userBId,
-            @RequestParam Long userBSkillId) {
+            @RequestParam Long userBSkillId,
+            @RequestParam String requestMessage) {
 
         // Logging received data
         System.out.println("📩 Received Request:");
@@ -55,6 +60,7 @@ public class RequestController {
         request.setUserA(userAOpt.get());
         request.setUserASkill(userASkillOpt.get());
         request.setUserB(userBOpt.get());
+        request.setRequestMessage(requestMessage);
         request.setUserBSkill(userBSkillOpt.get());
         request.setStatus(Request.Status.PENDING);
         request.setCreatedAt(LocalDateTime.now());
@@ -78,9 +84,22 @@ public class RequestController {
             return "⚠️ Request not found!";
         }
 
+
+
         Request request = requestOpt.get();
+
+        Exchange exchange = new Exchange();
+        exchange.setUserA(request.getUserA());
+        exchange.setUserASkill(request.getUserASkill());
+        exchange.setUserB(request.getUserB());
+        exchange.setUserBSkill(request.getUserBSkill());
+        exchange.setCreatedAt(LocalDateTime.now());
+        exchange.setStatus("ONGOING");
+        exchangeRepository.save(exchange);
+
+
         request.setStatus(Request.Status.ACCEPTED);
-        requestRepository.save(request);
+        requestRepository.delete(request);
 
         return "✅ Request accepted successfully!";
     }

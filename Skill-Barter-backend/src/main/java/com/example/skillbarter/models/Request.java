@@ -34,6 +34,8 @@ public class Request {
 
     private LocalDateTime createdAt;
 
+    private String requestMessage;
+
     public enum Status {
         ACCEPTED, PENDING, DECLINED
     }
