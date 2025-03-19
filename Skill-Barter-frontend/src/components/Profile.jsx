@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Edit, Check, User } from 'lucide-react';
-
+import axios from 'axios';
 
 function App() {
   const [userData, setUserData] = useState(null);
@@ -8,8 +8,9 @@ function App() {
   const [updatedBio, setUpdatedBio] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
-  const [skills, setSkills] = useState([]); // Available skills list
-  const [selectedSkill, setSelectedSkill] = useState(''); // Selected skill to add
+  const [skills, setSkills] = useState([]);
+  const [selectedSkill, setSelectedSkill] = useState('');
+  const [profileImageFile, setProfileImageFile] = useState(null); // New state for file
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -27,8 +28,6 @@ function App() {
         });
 
         if (response.ok) {
-
-          
           const data = await response.json();
           console.log(data)
           setUserData(data);
@@ -58,12 +57,38 @@ function App() {
       }
     };
 
-
     fetchUserData();
     fetchSkills();
   }, []);
 
-  
+  // Handle file selection for image upload
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setProfileImageFile(e.target.files[0]);
+    }
+  };
+
+  // Separate function to upload the image file
+  const uploadImage = async (email) => {
+    if (!profileImageFile) return null;
+    const formData = new FormData();
+    formData.append('file', profileImageFile);
+    try {
+      console.log(formData.profileImageFile)
+      const response = await axios.post(`http://localhost:8080/api/user/${email}/upload-image`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      if (response.status === 200) {
+        return response.data.profilePicture; // Assuming backend returns updated user with profilePicture field
+      }
+      setError('Image upload failed.');
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      setError('Unable to upload image.');
+    }
+    return null;
+  };
+
   const handleAddSkill = async () => {
     if (!selectedSkill || !userData) return;
 
@@ -72,7 +97,7 @@ function App() {
       const response = await fetch(`http://localhost:8080/api/user/${email}/skills`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify([parseInt(selectedSkill)]), // Convert skill ID to number
+        body: JSON.stringify([parseInt(selectedSkill)]),
       });
 
       if (response.ok) {
@@ -85,8 +110,7 @@ function App() {
     } catch {
       setError('Unable to connect to the server.');
     }
-  }; 
-
+  };
 
   const handleSaveChanges = async () => {
     if (!userData) return;
@@ -97,17 +121,25 @@ function App() {
       return;
     }
 
+    // If there is a new image file, upload it first.
+    let imageUrl = userData.profilePicture;
+    if (profileImageFile) {
+      const uploadedImageUrl = await uploadImage(email);
+      if (uploadedImageUrl) {
+        imageUrl = uploadedImageUrl;
+      }
+    }
+
     const updatedUser = {
       name: updatedName,
       bio: updatedBio,
+      profilePicture: imageUrl, // include new profile picture URL
     };
 
     try {
       const response = await fetch(`http://localhost:8080/api/user/${email}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedUser),
       });
 
@@ -116,6 +148,7 @@ function App() {
         setUserData(updatedData);
         setIsEditing(false);
         setError(null);
+        setProfileImageFile(null);
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Failed to update profile' }));
         setError(errorData.message || 'Failed to update profile');
@@ -217,6 +250,14 @@ function App() {
             )}
           </div>
 
+          {/* Image upload section when editing */}
+          {isEditing && (
+            <div className="form-group">
+              <label>Profile Picture</label>
+              <input type="file" accept="image/*" onChange={handleFileChange} />
+            </div>
+          )}
+
           <div className="form-group">
             <label>Skills</label>
             <div className="skills-container">
@@ -232,7 +273,7 @@ function App() {
             </div>
           </div>
 
-{/* Add Skills Section */}
+          {/* Add Skills Section */}
           <div className="form-group">
             <label>Add Skills</label>
             <div className="skill-selection">
@@ -242,7 +283,11 @@ function App() {
               >
                 <option value="">Select a skill</option>
                 {skills
-                  .filter((skill) => !userData.userSkills.includes(skill.skillName))
+                  .filter((skill) => 
+                    !userData.userSkills.some(
+                      (us) => us.skill.skillName === skill.skillName
+                    )
+                  )
                   .map((skill) => (
                     <option key={skill.skillId} value={skill.skillId}>
                       {skill.skillName}
@@ -269,7 +314,6 @@ function App() {
             </div>
           </div>
 
-          
           {isEditing && (
             <div className="button-group">
               <button
@@ -277,15 +321,13 @@ function App() {
                   setIsEditing(false);
                   setUpdatedName(userData.name);
                   setUpdatedBio(userData.bio);
+                  setProfileImageFile(null);
                 }}
                 className="button secondary"
               >
                 Cancel
               </button>
-              <button
-                onClick={handleSaveChanges}
-                className="button primary"
-              >
+              <button onClick={handleSaveChanges} className="button primary">
                 Save Changes
               </button>
             </div>

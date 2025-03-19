@@ -45,4 +45,13 @@ public class UserService {
         return userRepository.save(existingUser);
     }
 
+    public User updateProfilePicture(String email, String imageUrl) {
+        User user = userRepository.findByEmail(email).orElse(null); // or however you find the user by email
+        if (user != null) {
+            user.setProfilePicture(imageUrl);
+            userRepository.save(user);
+        }
+        return user;
+    }
+
 }

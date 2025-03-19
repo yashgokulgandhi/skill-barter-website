@@ -1,13 +1,7 @@
 package com.example.skillbarter.controllers;
 
-import com.example.skillbarter.models.Exchange;
-import com.example.skillbarter.models.Request;
-import com.example.skillbarter.models.Skill;
-import com.example.skillbarter.models.User;
-import com.example.skillbarter.repositories.ExchangeRepository;
-import com.example.skillbarter.repositories.RequestRepository;
-import com.example.skillbarter.repositories.SkillRepository;
-import com.example.skillbarter.repositories.UserRepository;
+import com.example.skillbarter.models.*;
+import com.example.skillbarter.repositories.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -22,12 +16,14 @@ public class RequestController {
     private final UserRepository userRepository;
     private final SkillRepository skillRepository;
     private final ExchangeRepository exchangeRepository;
+    private final UserSkillRepository userSkillRepository;
 
-    public RequestController(RequestRepository requestRepository, UserRepository userRepository, SkillRepository skillRepository, ExchangeRepository exchangeRepository) {
+    public RequestController(RequestRepository requestRepository, UserRepository userRepository, SkillRepository skillRepository, ExchangeRepository exchangeRepository, UserSkillRepository userSkillRepository) {
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
         this.skillRepository = skillRepository;
         this.exchangeRepository = exchangeRepository;
+        this.userSkillRepository = userSkillRepository;
     }
 
     // 📌 Create a new skill exchange request
@@ -47,21 +43,21 @@ public class RequestController {
         // Fetch Users and Skills
         Optional<User> userAOpt = userRepository.findById(userAId);
         Optional<User> userBOpt = userRepository.findById(userBId);
-        Optional<Skill> userASkillOpt = skillRepository.findById(userASkillId);
-        Optional<Skill> userBSkillOpt = skillRepository.findById(userBSkillId);
+        UserSkill userASkill=userSkillRepository.findById(userASkillId).orElse(null);
+        UserSkill userBSkill=userSkillRepository.findById(userBSkillId).orElse(null);
 
-        if (userAOpt.isEmpty() || userBOpt.isEmpty() || userASkillOpt.isEmpty() || userBSkillOpt.isEmpty()) {
-            System.out.println("⚠️ Invalid request: User or Skill not found.");
-            return "Invalid request data!";
-        }
+        Skill userASkillOpt = userASkill.getSkill();
+        Skill userBSkillOpt = userBSkill.getSkill();
+
+
 
         // Create and save request
         Request request = new Request();
         request.setUserA(userAOpt.get());
-        request.setUserASkill(userASkillOpt.get());
+        request.setUserASkill(userASkillOpt);
         request.setUserB(userBOpt.get());
         request.setRequestMessage(requestMessage);
-        request.setUserBSkill(userBSkillOpt.get());
+        request.setUserBSkill(userBSkillOpt);
         request.setStatus(Request.Status.PENDING);
         request.setCreatedAt(LocalDateTime.now());
 

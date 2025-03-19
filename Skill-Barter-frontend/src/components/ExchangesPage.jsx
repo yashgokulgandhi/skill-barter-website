@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
 const ExchangesPage = () => {
   const [exchanges, setExchanges] = useState([]);
   const userId = localStorage.getItem('userId'); 
@@ -13,7 +12,7 @@ const ExchangesPage = () => {
 
     const fetchExchanges = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/exchanges/ongoing/${userId}`);
+        const response = await axios.get(`http://localhost:8080/api/exchanges/${userId}`);
         setExchanges(response.data);
       } catch (error) {
         console.error("❌ Error fetching exchanges:", error);
@@ -34,10 +33,13 @@ const ExchangesPage = () => {
 
   return (
     <div className="exchanges-page">
-      <h1>Ongoing Skill Exchanges</h1>
+      <h1>Skill Exchanges</h1>
+      
+      {/* Ongoing Exchanges Section */}
+      <h2>Ongoing Exchanges</h2>
       <div className="exchanges-container">
-        {exchanges.length > 0 ? (
-          exchanges.map((exchange) => (
+        {exchanges.filter(ex => ex.status === "ONGOING").length > 0 ? (
+          exchanges.filter(ex => ex.status === "ONGOING").map((exchange) => (
             <div key={exchange.id} className="exchange-card">
               <div className="exchange-info">
                 <img 
@@ -47,7 +49,7 @@ const ExchangesPage = () => {
                   onError={(e) => { e.target.src = "/default-profile.png"; }}
                 />
                 <div className="user-info">
-                  <h3>{exchange.userA?.name || "Unknown User"} ↔ {exchange.userB?.name || "Unknown User"}</h3>
+                  <h3>{exchange.userA?.name} ↔ {exchange.userB?.name}</h3>
                   <p>{exchange.userA?.name} Shares Skill {exchange.userASkill?.skillName}</p>
                   <p>{exchange.userB?.name} Shares Skill {exchange.userBSkill?.skillName}</p>
                   <p className="exchange-date">
@@ -55,17 +57,45 @@ const ExchangesPage = () => {
                   </p>
                 </div>
               </div>
+
               <div className="action-buttons">
                 <button className="complete-btn" onClick={() => handleAction(exchange.id, "complete")}>Complete</button>
                 <button className="cancel-btn" onClick={() => handleAction(exchange.id, "cancel")}>Cancel</button>
-                <button className="chat-btn" onClick={() =>{ 
-                    console.log()
-                    navigate(`/chat/${exchange.userA.userId == userId ? exchange.userB.userId : exchange.userA.userId}`)}}>Chat</button>
+                <button className="chat-btn" onClick={() => navigate(`/chat/${exchange.userA.userId === userId ? exchange.userB.userId : exchange.userA.userId}`)}>Chat</button>
               </div>
             </div>
           ))
         ) : (
           <p>No ongoing exchanges.</p>
+        )}
+      </div>
+
+      {/* Completed Exchanges Section */}
+      <h2>Completed Exchanges</h2>
+      <div className="exchanges-container">
+        {exchanges.filter(ex => ex.status === "COMPLETED").length > 0 ? (
+          exchanges.filter(ex => ex.status === "COMPLETED").map((exchange) => (
+            <div key={exchange.id} className="exchange-card">
+              <div className="exchange-info">
+                <img 
+                  src={exchange.userA?.profilePicture || "/default-profile.png"} 
+                  alt={exchange.userA?.name || "User"} 
+                  className="profile-pic"
+                  onError={(e) => { e.target.src = "/default-profile.png"; }}
+                />
+                <div className="user-info">
+                  <h3>{exchange.userA?.name} ↔ {exchange.userB?.name}</h3>
+                  <p>{exchange.userA?.name} Shared Skill {exchange.userASkill?.skillName}</p>
+                  <p>{exchange.userB?.name} Shared Skill {exchange.userBSkill?.skillName}</p>
+                  <p className="exchange-date">
+                    Completed on: {exchange.createdAt ? new Date(exchange.createdAt).toLocaleDateString() : "N/A"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No completed exchanges.</p>
         )}
       </div>
     </div>

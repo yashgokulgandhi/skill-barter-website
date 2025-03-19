@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/SearchPage.css';
 import { Search } from 'lucide-react';
@@ -6,33 +6,53 @@ import axios from 'axios';
 
 function SearchPage() {
   const [query, setQuery] = useState('');
-  const [users, setUsers] = useState([]); 
   const [results, setResults] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0); // Page index starts at 0
+  const [totalPages, setTotalPages] = useState(0);
+  const itemsPerPage = 5;
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios.get("http://localhost:8080/api/users")
-      .then((res) => setUsers(res.data))
-      .catch((err) => console.error("Error fetching users:", err));
-  }, []);
+  // Retrieve the current user ID from localStorage
+  const currentUserId = localStorage.getItem('userId');
 
-  const handleSearch = (e) => {
-    const searchQuery = e.target.value;
-    setQuery(searchQuery);
-
+  // Fetch search results from the server
+  const fetchResults = async (searchQuery, page) => {
     if (searchQuery.trim() === '') {
       setResults([]);
+      setTotalPages(0);
       return;
     }
 
-    const filteredResults = users.filter(user =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (user.userSkills || []).some(skillS =>
-        skillS.skill.skillName.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    );
+    try {
+      const response = await axios.get("http://localhost:8080/api/users/search", {
+        params: {
+          query: searchQuery,
+          page: page,
+          size: itemsPerPage,
+          currentUserId: currentUserId
+        }
+      });
 
-    setResults(filteredResults);
+      setResults(response.data.content);
+      setTotalPages(response.data.totalPages);
+      setCurrentPage(response.data.number);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
+
+  // Trigger search on input change
+  const handleSearch = (e) => {
+    const searchQuery = e.target.value;
+    setQuery(searchQuery);
+    fetchResults(searchQuery, 0);
+  };
+
+  // Handle page changes
+  const handlePageChange = (newPage) => {
+    if (newPage >= 0 && newPage < totalPages) {
+      fetchResults(query, newPage);
+    }
   };
 
   const handleUserClick = (userId) => {
@@ -65,7 +85,9 @@ function SearchPage() {
                   <h3 className="username">{user.name}</h3>
                   <div className="skills-container">
                     {(user.userSkills || []).map((skillS, index) => (
-                      <span key={index} className="skill">{skillS.skill.skillName}</span>
+                      <span key={index} className="skill">
+                        {skillS.skill.skillName}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -76,6 +98,26 @@ function SearchPage() {
           query.trim() !== '' && <p className="no-results">No results found</p>
         )}
       </div>
+
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 0}
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage + 1} of {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage + 1 === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

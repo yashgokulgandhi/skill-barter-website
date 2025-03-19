@@ -59,25 +59,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="exchanges-section">
-        <h2>Recent Exchanges</h2>
-        <div className="exchanges-grid">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="exchange-card">
-              <div className="exchange-header">
-                <div className="avatar"></div>
-                <div className="exchange-info">
-                  <h3>User {i}</h3>
-                  <p>Skill Exchange: Programming for Design</p>
-                </div>
-              </div>
-              <p className="exchange-message">
-                "Great experience exchanging skills! Learned a lot and had fun in the process."
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      
     </div>
   );
 }

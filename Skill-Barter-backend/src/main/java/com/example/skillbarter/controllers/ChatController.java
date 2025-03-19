@@ -1,5 +1,6 @@
 package com.example.skillbarter.controllers;
 
+import com.cloudinary.Cloudinary;
 import com.example.skillbarter.dtos.ChatMessageDTO;
 import com.example.skillbarter.models.Message;
 import com.example.skillbarter.models.User;
@@ -27,6 +28,8 @@ public class ChatController {
 
     @Autowired
     private UserRepository userRepository;
+
+
 
     @MessageMapping("/chat")
     public void sendMessage(@Payload ChatMessageDTO chatMessage) {
