@@ -17,7 +17,7 @@ public class WebMvcConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("*")  // ✅ Allow only frontend origin
+                        .allowedOriginPatterns("https://skill-barter-website-2dvb-dki26fj9x-yashgokulgandhis-projects.vercel.app/")  // ✅ Allow only frontend origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true); // ✅ Allows authentication cookies
