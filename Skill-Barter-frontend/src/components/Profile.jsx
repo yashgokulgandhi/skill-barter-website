@@ -91,14 +91,20 @@ function App() {
 
   const handleAddSkill = async () => {
     if (!selectedSkill || !userData) return;
-
+    
     try {
       const email = localStorage.getItem('email');
-      const response = await fetch(`http://localhost:8080/api/user/${email}/skills`, {
+      // const response = await fetch(`http://localhost:8080/api/user/${email}/skills`, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify([parseInt(selectedSkill)]),
+      // });
+      const response = await fetch(`https://resilient-enthusiasm-production.up.railway.app/api/user/${email}/skills`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify([parseInt(selectedSkill)]),
       });
+
 
       if (response.ok) {
         const updatedData = await response.json();
@@ -137,7 +143,12 @@ function App() {
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/api/user/${email}`, {
+      // const response = await fetch(`http://localhost:8080/api/user/${email}`, {
+      //   method: 'PUT',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(updatedUser),
+      // });
+      const response = await fetch(`https://resilient-enthusiasm-production.up.railway.app/api/user/${email}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedUser),

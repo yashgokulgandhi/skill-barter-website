@@ -24,10 +24,19 @@ const iconMapping = {
 
 function Home() {
   const [skills, setSkills] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //     .get('http://localhost:8080/api/skills')
+  //     .then((res) => { 
+  //       console.log(res.data);
+  //       setSkills(res.data);
+  //     })
+  //     .catch((err) => console.error('Error fetching skills', err));
+  // }, []);
 
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/skills')
+      .get('https://resilient-enthusiasm-production.up.railway.app/api/skills')
       .then((res) => { 
         console.log(res.data);
         setSkills(res.data);

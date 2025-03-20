@@ -16,11 +16,18 @@ function SearchedProfile() {
     const fetchData = async () => {
       try {
         // Fetch searched user's profile
-        const userResponse = await axios.get(`http://localhost:8080/api/userbyid/${userId}`);
+        // const userResponse = await axios.get(`http://localhost:8080/api/userbyid/${userId}`);
+        // setUser(userResponse.data);
+
+        // // Fetch logged-in user's skills
+        // const skillsResponse = await axios.get(`http://localhost:8080/api/userbyid/${loggedInUserId}`);
+        // setSkills(skillsResponse.data.userSkills);
+
+        const userResponse = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/userbyid/${userId}`);
         setUser(userResponse.data);
 
         // Fetch logged-in user's skills
-        const skillsResponse = await axios.get(`http://localhost:8080/api/userbyid/${loggedInUserId}`);
+        const skillsResponse = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/userbyid/${loggedInUserId}`);
         setSkills(skillsResponse.data.userSkills);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -47,8 +54,14 @@ function SearchedProfile() {
     console.log("Sending request with data:", requestData);
 
     try {
+      // const response = await axios.post(
+      //   "http://localhost:8080/api/requests/create",
+      //   null,
+      //   { params: requestData }
+      // );
+      
       const response = await axios.post(
-        "http://localhost:8080/api/requests/create",
+        "https://resilient-enthusiasm-production.up.railway.app/requests/create",
         null,
         { params: requestData }
       );

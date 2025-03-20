@@ -18,7 +18,8 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/api/signup', formData);
+      // const response = await axios.post('http://localhost:8080/api/signup', formData);
+      const response = await axios.post('https://resilient-enthusiasm-production.up.railway.app/api/signup', formData);
       console.log('User registered:', response.data);
       navigate('/'); // Navigate to login or dashboard
     } catch (error) {

@@ -13,7 +13,8 @@ const RequestPage = () => {
 
     const fetchRequests = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/requests/pending/${userId}`);
+        // const response = await axios.get(`http://localhost:8080/api/requests/pending/${userId}`);
+        const response = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/api/requests/pending/${userId}`);
         setRequests(response.data);
       } catch (error) {
         console.error("❌ Error fetching requests:", error);
@@ -25,7 +26,8 @@ const RequestPage = () => {
 
   const handleAction = async (id, action) => {
     try {
-      await axios.post(`http://localhost:8080/api/requests/${action}/${id}`);
+      // await axios.post(`http://localhost:8080/api/requests/${action}/${id}`);
+      await axios.post(`https://resilient-enthusiasm-production.up.railway.app/api/requests/${action}/${id}`);
 
       setRequests(prevRequests => prevRequests.filter(req => req.id !== id)); // Remove accepted/declined request
     } catch (error) {

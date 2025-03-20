@@ -27,8 +27,16 @@ function ChatWindow() {
 
     console.log("✅ Sender ID:", senderId);
     console.log("✅ Receiver ID:", receiverId);
+    
+    
+    // axios.get(`http://localhost:8080/api/userbyid/${receiverId}`)
+    // .then((res)=>res.data)
+    // .then((data)=>{
+    //     setReceiverName(data.name)
+    //     setProfile(data.profilePicture)
+    // })
 
-    axios.get(`http://localhost:8080/api/userbyid/${receiverId}`)
+    axios.get(`https://resilient-enthusiasm-production.up.railway.app/api/userbyid/${receiverId}`)
     .then((res)=>res.data)
     .then((data)=>{
         setReceiverName(data.name)
@@ -39,7 +47,8 @@ function ChatWindow() {
     const fetchPreviousMessages = async () => {
       try {
         console.log("📜 Fetching chat history...");
-        const response = await fetch(`http://localhost:8080/api/messages?senderId=${senderId}&receiverId=${receiverId}`);
+        // const response = await fetch(`http://localhost:8080/api/messages?senderId=${senderId}&receiverId=${receiverId}`);
+        const response = await fetch(`https://resilient-enthusiasm-production.up.railway.app/api/messages?senderId=${senderId}&receiverId=${receiverId}`);
         if (!response.ok) throw new Error("Failed to fetch messages");
 
         const data = await response.json();
@@ -54,7 +63,8 @@ function ChatWindow() {
 
     const connectWebSocket = () => {
       console.log("🔗 Attempting to open WebSocket connection...");
-      const socket = new SockJS("http://localhost:8080/ws");
+      // const socket = new SockJS("http://localhost:8080/ws");
+      const socket = new SockJS("https://resilient-enthusiasm-production.up.railway.app/ws");
       const client = Stomp.over(socket);
 
       client.debug = (msg) => console.log("STOMP Debug:", msg);

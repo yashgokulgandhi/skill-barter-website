@@ -11,20 +11,30 @@ const ExchangesPage = () => {
     if (!userId) return;
 
     const fetchExchanges = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/api/exchanges/${userId}`);
-        setExchanges(response.data);
-      } catch (error) {
-        console.error("❌ Error fetching exchanges:", error);
-      }
-    };
+      
+    //   try {
+    //     const response = await axios.get(`http://localhost:8080/api/exchanges/${userId}`);
+    //     setExchanges(response.data);
+    //   } catch (error) {
+    //     console.error("❌ Error fetching exchanges:", error);
+    //   }
+    // };
+
+    try {
+      const response = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/api/exchanges/${userId}`);
+      setExchanges(response.data);
+    } catch (error) {
+      console.error("❌ Error fetching exchanges:", error);
+    }
+  };
 
     fetchExchanges();
   }, [userId]);
 
   const handleAction = async (id, action) => {
     try {
-      await axios.post(`http://localhost:8080/api/exchanges/${action}/${id}`);
+      // await axios.post(`http://localhost:8080/api/exchanges/${action}/${id}`);
+      await axios.post(`https://resilient-enthusiasm-production.up.railway.app/api/exchanges/${action}/${id}`);
       setExchanges(prevExchanges => prevExchanges.filter(ex => ex.id !== id)); 
     } catch (error) {
       console.error(`❌ Error ${action} exchange:`, error);

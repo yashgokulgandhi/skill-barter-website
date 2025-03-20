@@ -23,15 +23,24 @@ function SearchPage() {
       return;
     }
 
+    // try {
+    //   const response = await axios.get("http://localhost:8080/api/users/search", {
+    //     params: {
+    //       query: searchQuery,
+    //       page: page,
+    //       size: itemsPerPage,
+    //       currentUserId: currentUserId
+    //     }
+    //   });
     try {
-      const response = await axios.get("http://localhost:8080/api/users/search", {
-        params: {
-          query: searchQuery,
-          page: page,
-          size: itemsPerPage,
-          currentUserId: currentUserId
-        }
-      });
+    const response = await axios.get("https://resilient-enthusiasm-production.up.railway.app/users/search", {
+      params: {
+        query: searchQuery,
+        page: page,
+        size: itemsPerPage,
+        currentUserId: currentUserId
+      }
+    });
 
       setResults(response.data.content);
       setTotalPages(response.data.totalPages);

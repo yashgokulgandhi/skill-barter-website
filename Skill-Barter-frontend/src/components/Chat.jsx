@@ -25,7 +25,8 @@ function Chat() {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get(`http://localhost:8080/api/user/${receiverId}`);
+                // const response = await axios.get(`http://localhost:8080/api/user/${receiverId}`);
+                const response = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/api/user/${receiverId}`);
                 console.log("Full receiver response:", response);
                 if (response.status !== 200) {
                     throw new Error(`Failed to fetch receiver: ${response.status} ${response.statusText}`);
@@ -55,7 +56,8 @@ function Chat() {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get(`http://localhost:8080/api/chat/${receiverId}/messages?userId=${userId}`);
+                // const response = await axios.get(`http://localhost:8080/api/chat/${receiverId}/messages?userId=${userId}`);
+                const response = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/api/chat/${receiverId}/messages?userId=${userId}`);
                 console.log("Full messages response:", response);
                 if (response.status !== 200) {
                     throw new Error(`Failed to fetch messages: ${response.status} ${response.statusText}`);
@@ -84,7 +86,8 @@ function Chat() {
         if (!userId || !receiverId || !receiver) return; // Important check!
 
         const client = new Client({
-            webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+            // webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+            webSocketFactory: () => new SockJS('https://resilient-enthusiasm-production.up.railway.app/ws'),
             onConnect: () => {
                 setStompClient(client);
 
