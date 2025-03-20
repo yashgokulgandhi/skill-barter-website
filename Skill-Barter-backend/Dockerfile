@@ -1,14 +1,18 @@
-# Step 1: Start with an image that has Java and Maven
+# Use a base image with Maven and Java 17 (matches your pom.xml)
 FROM maven:3.8.6-eclipse-temurin-17
 
-# Step 2: Set a working directory (like a folder in the container)
+# Set the working directory
 WORKDIR /app
 
-# Step 3: Copy your project files into the container
-COPY . .
+# Copy pom.xml and download dependencies for caching
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
-# Step 4: Build your project with Maven
+# Copy source code
+COPY src ./src
+
+# Build the project
 RUN mvn clean package -DskipTests
 
-# Step 5: Tell Docker how to run your app
-CMD ["java", "-jar", "target/your-app-name.jar"]
+# Run the application
+CMD ["java", "-jar", "target/Skill-Barter-backend-0.0.1-SNAPSHOT.jar"]
