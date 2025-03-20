@@ -27,7 +27,8 @@ public class Review {
 
     private int rating;
 
-    @Lob
+
+    @Column(columnDefinition = "TEXT")
     private String comment;
 
     private LocalDateTime createdAt;

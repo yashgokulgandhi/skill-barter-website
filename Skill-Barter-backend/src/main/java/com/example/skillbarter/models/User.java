@@ -26,11 +26,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Lob
-    @Column(length = 3024)
+
+    @Column(columnDefinition = "TEXT")
     private String profilePicture;
 
-    @Lob
+
+    @Column(columnDefinition = "TEXT")
     private String bio;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")

@@ -22,7 +22,8 @@ public class Skill {
     @Column(unique = true, nullable = false)
     private String skillName;
 
-    @Lob
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String icon;

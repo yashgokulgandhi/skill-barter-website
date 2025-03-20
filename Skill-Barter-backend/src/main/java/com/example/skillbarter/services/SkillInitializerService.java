@@ -4,6 +4,7 @@ import com.example.skillbarter.models.Skill;
 import com.example.skillbarter.repositories.SkillRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class SkillInitializerService {
     }
 
     @PostConstruct
+    @Transactional
     public void initializeSkills() {
         List<Skill> skills = List.of(
                 new Skill(null, "Web Development", "Building websites using HTML, CSS, JavaScript, and frameworks like React or Angular.", "Browser", null),
@@ -38,4 +40,3 @@ public class SkillInitializerService {
         }
     }
 }
-
