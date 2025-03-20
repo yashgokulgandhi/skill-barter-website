@@ -50,7 +50,7 @@ function App() {
     const fetchSkills = async () => {
       try {
         // const response = await fetch('http://localhost:8080/api/skills');
-        const response = await fetch('https://resilient-enthusiasm-production.up.railway.app/api/api/skills');
+        const response = await fetch('https://resilient-enthusiasm-production.up.railway.app/api/skills');
         if (response.ok) {
           const data = await response.json();
           setSkills(data);
