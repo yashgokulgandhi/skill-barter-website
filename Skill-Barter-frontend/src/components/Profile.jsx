@@ -22,7 +22,11 @@ function App() {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/api/user/${email}`, {
+        // const response = await fetch(`http://localhost:8080/api/user/${email}`, {
+        //   method: 'GET',
+        //   headers: { 'Content-Type': 'application/json' },
+        // });
+        const response = await fetch(`https://resilient-enthusiasm-production.up.railway.app/api/user/${email}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -45,7 +49,8 @@ function App() {
 
     const fetchSkills = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/skills');
+        // const response = await fetch('http://localhost:8080/api/skills');
+        const response = await fetch('https://resilient-enthusiasm-production.up.railway.app/api/api/skills');
         if (response.ok) {
           const data = await response.json();
           setSkills(data);
@@ -75,7 +80,10 @@ function App() {
     formData.append('file', profileImageFile);
     try {
       console.log(formData.profileImageFile)
-      const response = await axios.post(`http://localhost:8080/api/user/${email}/upload-image`, formData, {
+      // const response = await axios.post(`http://localhost:8080/api/user/${email}/upload-image`, formData, {
+      //   headers: { 'Content-Type': 'multipart/form-data' },
+      // });
+      const response = await axios.post(`https://resilient-enthusiasm-production.up.railway.app/api/user/${email}/upload-image`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       if (response.status === 200) {
