@@ -23,11 +23,11 @@ function SearchedProfile() {
         // const skillsResponse = await axios.get(`http://localhost:8080/api/userbyid/${loggedInUserId}`);
         // setSkills(skillsResponse.data.userSkills);
 
-        const userResponse = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/userbyid/${userId}`);
+        const userResponse = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/api/userbyid/${userId}`);
         setUser(userResponse.data);
 
         // Fetch logged-in user's skills
-        const skillsResponse = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/userbyid/${loggedInUserId}`);
+        const skillsResponse = await axios.get(`https://resilient-enthusiasm-production.up.railway.app/api/userbyid/${loggedInUserId}`);
         setSkills(skillsResponse.data.userSkills);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -61,7 +61,7 @@ function SearchedProfile() {
       // );
       
       const response = await axios.post(
-        "https://resilient-enthusiasm-production.up.railway.app/requests/create",
+        "https://resilient-enthusiasm-production.up.railway.app/api/requests/create",
         null,
         { params: requestData }
       );
