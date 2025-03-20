@@ -17,14 +17,13 @@ public class WebMvcConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("https://skill-barter-website-2dvb-dki26fj9x-yashgokulgandhis-projects.vercel.app/")  // ✅ Allow only frontend origin
+                        .allowedOriginPatterns("https://skill-barter-website-2dvb.vercel.app")  // ✅ Allow only frontend origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true); // ✅ Allows authentication cookies
             }
         };
     }
-
     @Bean
     public Cloudinary cloudinary() {
         Map<String, String> config = new HashMap<>();

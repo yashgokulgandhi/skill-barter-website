@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("https://skill-barter-website-2dvb-dki26fj9x-yashgokulgandhis-projects.vercel.app/")  // ✅ Allow only frontend origin
+                .setAllowedOriginPatterns("https://skill-barter-website-2dvb.vercel.app")  // ✅ Allow only frontend origin
                 .withSockJS();
     }
 }
