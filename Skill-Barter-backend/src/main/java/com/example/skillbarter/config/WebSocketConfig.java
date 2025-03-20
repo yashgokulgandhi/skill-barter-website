@@ -12,15 +12,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/queue"); // ✅ Enable private messaging
-        config.setApplicationDestinationPrefixes("/app"); // ✅ Prefix for sending messages
-        config.setUserDestinationPrefix("/user"); // ✅ Allow private messages
+        // Enable simple in-memory broker for private messaging
+        config.enableSimpleBroker("/queue");
+        // Set application destination prefix for messages sent from clients
+        config.setApplicationDestinationPrefixes("/app");
+        // Set user destination prefix to enable private messages
+        config.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("https://skill-barter-website-2dvb.vercel.app")  // ✅ Allow only frontend origin
+                // Allow any origin using allowedOriginPatterns with wildcard
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 }
