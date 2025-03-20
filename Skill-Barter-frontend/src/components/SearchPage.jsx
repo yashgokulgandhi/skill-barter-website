@@ -33,7 +33,7 @@ function SearchPage() {
     //     }
     //   });
     try {
-    const response = await axios.get("https://resilient-enthusiasm-production.up.railway.app/users/search", {
+    const response = await axios.get("https://resilient-enthusiasm-production.up.railway.app/api/users/search", {
       params: {
         query: searchQuery,
         page: page,
