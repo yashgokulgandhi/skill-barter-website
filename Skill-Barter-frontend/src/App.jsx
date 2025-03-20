@@ -21,7 +21,12 @@ function App() {
 
   const handleLogin = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
+      // const response = await fetch('http://localhost:8080/api/login', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ email, password }),
+      // });
+      const response = await fetch('https://resilient-enthusiasm-production.up.railway.app/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
